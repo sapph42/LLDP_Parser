@@ -5,9 +5,9 @@ using Microsoft.Extensions.Logging;
 namespace SapphTools.Parsers.Lldp;
 
 public static class LldpParser {
-    public static IEnumerable<Tlv> Parse(IEnumerable<byte> bytes) => Parse(bytes, null);
-    public static IEnumerable<Tlv> Parse(IEnumerable<byte> bytes, ILogger? Logger) {
-        byte[] byteArray = bytes.ToArray();
+    public static List<Tlv> Parse(IEnumerable<byte> bytes) => Parse(bytes, null);
+    public static List<Tlv> Parse(IEnumerable<byte> bytes, ILogger? Logger) {
+        byte[] byteArray = [.. bytes];
         return ParseLldp(byteArray, Logger);
     }
     public static byte[]? CollectLldpData() => CollectLLDPData(60, null);
@@ -16,7 +16,6 @@ public static class LldpParser {
     public static byte[]? CollectLLDPData(int collectionWindow, ILogger? Logger) {
         string sessionName = "LLDP";
         string etlFile = Path.GetTempFileName().Replace(".tmp", ".etl");
-
         using PowerShell ps = PowerShell.Create();
         ps.AddScript($@"Remove-NetEventSession -Name {sessionName} -ErrorAction SilentlyContinue
 New-NetEventSession -Name {sessionName} -LocalFilePath '{etlFile}' -CaptureMode SaveToFile
@@ -43,7 +42,7 @@ Stop-NetEventSession -Name {sessionName}
 
                 byte[] data = (byte[])record.Properties[3].Value;
 
-                ushort etherType = BitConverter.ToUInt16(new byte[] { data[13], data[12] }, 0);
+                ushort etherType = BitConverter.ToUInt16([data[13], data[12]], 0);
                 if (etherType != 0x88CC)
                     continue;
                 string srcMac = BitConverter.ToString(data, 6, 6);
@@ -52,11 +51,9 @@ Stop-NetEventSession -Name {sessionName}
         }
         return null;
     }
-    private static IEnumerable<Tlv> ParseLldp(byte[] frameData, ILogger? Logger) {
+    private static List<Tlv> ParseLldp(byte[] frameData, ILogger? Logger) {
         int offset = 14; //skip Ethernet header
-        string? portDesc = null;
-        string? systemName = null;
-        List<Tlv> tlvRecords = new();
+        List<Tlv> tlvRecords = [];
         while (offset < frameData.Length) {
             if (frameData[offset] == 0) {
                 tlvRecords.Add(new Tlv(frameData[offset..]));
@@ -78,10 +75,8 @@ Stop-NetEventSession -Name {sessionName}
         Logger?.LogInformation("LLDPCollect: TLV Parsing Complete");
         Logger?.LogInformation("LLDPCollect: TLV Follows");
         foreach (var tlv in tlvRecords) {
-            Logger?.LogInformation($"LLPDCollect: {tlv.ToString()}");
+            Logger?.LogInformation("LLPDCollect: {LLDPVALUE}", tlv.ToString());
         }
-        portDesc = tlvRecords.FirstOrDefault(tlv => tlv.Type == TlvType.PortID)?.Data?.ToString();
-        systemName = tlvRecords.FirstOrDefault(tlv => tlv.Type == TlvType.SystemName)?.Data?.ToString();
         return tlvRecords;
     }
 }
