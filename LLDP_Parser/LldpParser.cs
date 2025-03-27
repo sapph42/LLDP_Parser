@@ -10,10 +10,10 @@ public static class LldpParser {
         byte[] byteArray = [.. bytes];
         return ParseLldp(byteArray, Logger);
     }
-    public static byte[]? CollectLldpData() => CollectLLDPData(60, null);
-    public static byte[]? CollectLldpData(int collectionWindow) => CollectLLDPData(collectionWindow, null);
-    public static byte[]? CollectLLDPData(ILogger? Logger) => CollectLLDPData(60, Logger);
-    public static byte[]? CollectLLDPData(int collectionWindow, ILogger? Logger) {
+    public static byte[]? CollectLldpData() => CollectLldpData(60, null);
+    public static byte[]? CollectLldpData(int collectionWindow) => CollectLldpData(collectionWindow, null);
+    public static byte[]? CollectLldpData(ILogger? Logger) => CollectLldpData(60, Logger);
+    public static byte[]? CollectLldpData(int collectionWindow, ILogger? Logger) {
         string sessionName = "LLDP";
         string etlFile = Path.GetTempFileName().Replace(".tmp", ".etl");
         using PowerShell ps = PowerShell.Create();

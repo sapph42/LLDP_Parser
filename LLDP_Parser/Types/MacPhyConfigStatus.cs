@@ -1,8 +1,8 @@
 ﻿namespace SapphTools.Parsers.Lldp.Types;
 public class MacPhyConfigStatus {
-    public AutoNegSupportStatus AutoNegSupportStatus { get; set; }
-    public AdvCapabilities AdvCapabilities { get; set; }
-    public MauType MauType { get; set; }
+    public AutoNegSupportStatus AutoNegSupportStatus;
+    public AdvCapabilities AdvCapabilities;
+    public MauType MauType;
     public MacPhyConfigStatus(byte[] data) {
         AutoNegSupportStatus = (AutoNegSupportStatus)data[0];
         ushort caps = BinaryPrimitives.ReadUInt16BigEndian(data.AsSpan()[1..3]);
@@ -12,7 +12,7 @@ public class MacPhyConfigStatus {
         mau = (ushort)(mau >= 227 ? 0x1 : mau);
         MauType = (MauType)mau;
     }
-    public new string ToString() {
+    public override string ToString() {
         return $"AutoNegotiation: {AutoNegSupportStatus}; AdvancedCapabilities: {AdvCapabilities}; MAU Type: {MauType.ToDescription()}";
     }
 }

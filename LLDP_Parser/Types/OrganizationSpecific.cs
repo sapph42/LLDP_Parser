@@ -1,10 +1,10 @@
 ﻿namespace SapphTools.Parsers.Lldp.Types;
 public class OrganizationSpecific {
-    public Oui? Oui { get; set; }
-    public byte[] OuiBytes { get; set; }
-    public object Subtype { get; set; }
-    public byte[] Payload { get; set; } = [];
-    public object Data { get; set; }
+    public Oui? Oui;
+    public byte[] OuiBytes;
+    public object Subtype;
+    public byte[] Payload = [];
+    public object Data;
     private readonly string formattedOiuBytes;
     public OrganizationSpecific(byte[] oui, byte subtype, byte[] payload, OuiCollection ouiCollection) {
         formattedOiuBytes = $"{oui[0]:X2}:{oui[1]:X2}:{oui[2]:X2}";
@@ -41,7 +41,7 @@ public class OrganizationSpecific {
             }
         }
     }
-    public new string ToString() {
+    public override string ToString() {
         if (Oui is not null) {
             if (!string.IsNullOrWhiteSpace(Oui.VendorName))
                 if (Oui.MacPrefix == "00:12:0F") {

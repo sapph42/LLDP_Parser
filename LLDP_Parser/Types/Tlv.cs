@@ -5,10 +5,10 @@ using System.Text;
 namespace SapphTools.Parsers.Lldp.Types {
     public class Tlv {
         private static OuiCollection ouis = [];
-        public TlvType Type { get; set; }
-        public object? Subtype { get; set; }
-        public ushort Length { get; set; }
-        public byte[] RawPayload { get; set; }
+        public TlvType Type;
+        public object? Subtype;
+        public ushort Length;
+        public byte[] RawPayload;
         public object? Data;
         public Tlv(byte[] tlvBytes) {
             Type = (TlvType)(tlvBytes[0] >> 1); //First 7 bits
@@ -78,7 +78,7 @@ namespace SapphTools.Parsers.Lldp.Types {
                     break;
             }
         }
-        public new string ToString() {
+        public override string ToString() {
             StringBuilder sb = new();
             sb.Append("TLV Type: ");
             sb.Append(Type);

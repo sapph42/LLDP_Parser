@@ -24,7 +24,7 @@ public class TlvManagementAddress(
     public ushort OidLength = oidLength;
     public byte[]? Oid = oid;
 
-    public new string ToString() {
+    public override string ToString() {
         return Address.ToString() ?? "";
     }
 }

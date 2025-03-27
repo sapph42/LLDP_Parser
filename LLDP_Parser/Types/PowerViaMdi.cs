@@ -3,10 +3,10 @@ public class PowerViaMdi {
     public object Byte0;
     private readonly PsePdIdentifier PsePdIdentifier;
     private readonly MdiPowerSupport? MdiPowerSupport;
-    public PowerPair PowerPair { get; set; }
-    public PowerClass PowerClass { get; set; }
-    public ushort? PowerValue { get; set; } = null;
-    public byte[]? VendorExtensions { get; set; } = null;
+    public PowerPair PowerPair;
+    public PowerClass PowerClass;
+    public ushort? PowerValue = null;
+    public byte[]? VendorExtensions = null;
     public PowerViaMdi(byte[] data) {
         if (data[0] > 3) {
             PsePdIdentifier = (PsePdIdentifier)(data[0] & 0x11);
@@ -25,7 +25,7 @@ public class PowerViaMdi {
             VendorExtensions = data[5..];
         }
     }
-    public new string ToString() {
+    public override string ToString() {
         return $"MDI Power Support: {Byte0}; PowerPair: {PowerPair}; PowerClass: {PowerClass}; PowerValue: {PowerValue}; PowerExtensions: {VendorExtensions}";
     }
 }
