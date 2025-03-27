@@ -35,8 +35,8 @@ namespace LldpClassCS
 
 |   |   |
 |---|---|
-| CollectLlpdData()                  | Returns a `byte` array containing a captured LLDP frame, or `null` if no frame was captured. |
-| CollectLlpdData(Int32)             | Returns a `byte` array containing a captured LLDP frame after the specified capture duration in seconds. |
+| CollectLldpData()                  | Returns a `byte` array containing a captured LLDP frame, or `null` if no frame was captured. |
+| CollectLldpData(Int32)             | Returns a `byte` array containing a captured LLDP frame after the specified capture duration in seconds. |
 | CollectLldpData(ILogger?)          | Returns a `byte` array containing a captured LLDP frame, optionally logging capture status. |
 | CollectLldpData(Int32, ILogger?)   | Returns a `byte` array containing a captured LLDP frame after the specified duration, with optional logging. |
 | Parse(IEnumerable<Byte>)           | Returns a list of `Tlv` instances parsed from the provided byte sequence. |
